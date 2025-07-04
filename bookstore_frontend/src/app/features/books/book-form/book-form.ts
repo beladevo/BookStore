@@ -63,11 +63,11 @@ export class BookForm implements OnInit {
     this.categories$ = this.categoryService.getCategories();
 
     this.form = this.fb.group({
-      isbn: [{ value: '', disabled: this.isEdit }, Validators.required],
-      title: ['', Validators.required],
-      authors: ['', Validators.required],
-      category: ['', Validators.required],
-      year: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+      isbn: [{ value: '', disabled: this.isEdit }, [Validators.required, Validators.maxLength(20)]],
+      title: ['', [Validators.required, Validators.maxLength(200)]],
+      authors: ['', [Validators.required, this.authorsValidator]],
+      category: ['', [Validators.required, Validators.maxLength(100)]],
+      year: ['', [Validators.required, Validators.pattern(/^\d{4}$/), this.yearValidator]],
       price: ['', [Validators.required, Validators.min(0)]],
     });
 
@@ -86,52 +86,30 @@ export class BookForm implements OnInit {
     }
   }
 
-  private validateBookForm(): boolean {
-    const isbn = this.form.get('isbn')?.value?.trim();
-    const title = this.form.get('title')?.value?.trim();
-    const authorsRaw = this.form.get('authors')?.value;
-    const authors = authorsRaw
-      ? authorsRaw
-          .split(',')
-          .map((a: string) => a.trim())
-          .filter((a: string) => a)
-      : [];
-    const category = this.form.get('category')?.value?.trim();
-    const year = Number(this.form.get('year')?.value);
-    const price = Number(this.form.get('price')?.value);
-    const currentYear = new Date().getFullYear();
-
-    if (!isbn) {
-      this.notify.error('ISBN is required.');
-      return false;
-    }
-    if (!title) {
-      this.notify.error('Title is required.');
-      return false;
-    }
+  private authorsValidator(control: import('@angular/forms').AbstractControl) {
+    const value = control.value;
+    if (!value) return { authors: 'At least one author is required.' };
+    const authors = value.split(',').map((a: string) => a.trim()).filter((a: string) => a);
     if (!authors.length || authors.some((a: string) => !a)) {
-      this.notify.error('At least one author is required and cannot be empty.');
-      return false;
+      return { authors: 'At least one author is required and cannot be empty.' };
     }
-    if (!category) {
-      this.notify.error('Category is required.');
-      return false;
+    return null;
+  }
+
+  private yearValidator(control: import('@angular/forms').AbstractControl) {
+    const value = Number(control.value);
+    const currentYear = new Date().getFullYear();
+    if (isNaN(value) || value < 1000 || value > currentYear + 1) {
+      return { year: 'Invalid year.' };
     }
-    if (isNaN(year) || year < 1000 || year > currentYear + 1) {
-      this.notify.error('Invalid year.');
-      return false;
-    }
-    if (isNaN(price) || price < 0) {
-      this.notify.error('Price cannot be negative.');
-      return false;
-    }
-    return true;
+    return null;
   }
 
   save() {
-    if (this.form.invalid) return;
-    if (!this.validateBookForm()) return;
-
+    if (this.form.invalid) {
+      this.notify.error('Please fix the errors in the form.');
+      return;
+    }
     const authorsArray = this.form
       .get('authors')
       ?.value.split(',')

@@ -30,10 +30,10 @@
   </book>
   <book category="History">
     <isbn>978-0000000006</isbn>
-    <title>Empires of the Ancient World</title>
-    <author>Patricia Green</author>
+    <title>Empires of the Ancient World!</title>
     <year>2014</year>
-    <price>26.50</price>
+    <price>26.5</price>
+    <author>Patricia Green</author>
   </book>
   <book category="Fantasy">
     <isbn>978-0000000007</isbn>

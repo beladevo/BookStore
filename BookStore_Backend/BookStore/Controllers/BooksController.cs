@@ -25,7 +25,7 @@ public class BooksController : ControllerBase
     {
 
         if (pageSize < 1 || pageSize > 20)
-            return BadRequest(new { message = "Invalid operation!" });
+            return BadRequest(new { message = $"Page size must be between 1 and 20. Provided: {pageSize}" });
 
         var (totalCount, items) = _service.GetPaged(pageNumber, pageSize, search, category);
         return Ok(new

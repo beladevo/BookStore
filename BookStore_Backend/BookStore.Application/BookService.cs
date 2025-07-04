@@ -2,6 +2,9 @@
 using BookStore.Core.Exceptions;
 using BookStore.Core.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+using BookStore.Application.Validators;
+using FluentValidation;
 
 namespace BookStore.Application.Services
 {
@@ -9,10 +12,20 @@ namespace BookStore.Application.Services
     {
         private readonly IBookRepository _repository;
         private readonly IMemoryCache _cache;
-        public BookService(IBookRepository repository, IMemoryCache cache)
+        private readonly ILogger<BookService> _logger;
+        private readonly IValidator<Book> _bookValidator;
+
+        public BookService(IBookRepository repository, IMemoryCache cache, ILogger<BookService> logger)
+            : this(repository, cache, logger, new BookValidator())
+        {
+        }
+
+        public BookService(IBookRepository repository, IMemoryCache cache, ILogger<BookService> logger, IValidator<Book> bookValidator)
         {
             _repository = repository;
             _cache = cache;
+            _logger = logger;
+            _bookValidator = bookValidator;
         }
 
         public List<Book> GetAll()
@@ -80,13 +93,16 @@ namespace BookStore.Application.Services
 
         public void Add(Book book)
         {
+            _logger.LogInformation("Adding book with ISBN: {Isbn}", book.Isbn);
             ValidateBook(book);
-
             var existing = _repository.GetByIsbn(book.Isbn);
             if (existing != null)
+            {
+                _logger.LogWarning("Attempted to add duplicate book with ISBN: {Isbn}", book.Isbn);
                 throw new InvalidOperationException($"Book with ISBN '{book.Isbn}' already exists.");
-
+            }
             _repository.Add(book);
+            _logger.LogInformation("Successfully added book with ISBN: {Isbn}", book.Isbn);
         }
 
         public void Update(string isbn, Book book)
@@ -111,26 +127,13 @@ namespace BookStore.Application.Services
         #region Private Methods
         private void ValidateBook(Book book)
         {
-            if (book == null)
-                throw new BusinessLogicException("Book cannot be null.");
-
-            if (string.IsNullOrWhiteSpace(book.Isbn))
-                throw new BusinessLogicException("ISBN is required.");
-
-            if (string.IsNullOrWhiteSpace(book.Title))
-                throw new BusinessLogicException("Title is required.");
-
-            if (book.Authors == null || book.Authors.Count == 0 || book.Authors.Any(a => string.IsNullOrWhiteSpace(a)))
-                throw new BusinessLogicException("At least one author is required and cannot be empty.");
-
-            if (string.IsNullOrWhiteSpace(book.Category))
-                throw new BusinessLogicException("Category is required.");
-
-            if (book.Year < 1000 || book.Year > DateTime.UtcNow.Year + 1)
-                throw new BusinessLogicException($"Invalid year.");
-
-            if (book.Price < 0)
-                throw new BusinessLogicException("Price cannot be negative.");
+            var result = _bookValidator.Validate(book);
+            if (!result.IsValid)
+            {
+                var errorMsg = string.Join("; ", result.Errors.Select(e => e.ErrorMessage));
+                _logger.LogError("Book validation failed: {ErrorMsg}", errorMsg);
+                throw new BusinessLogicException(errorMsg);
+            }
         }
 
         private string EscapeText(string text)

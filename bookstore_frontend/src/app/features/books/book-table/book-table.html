@@ -34,56 +34,58 @@
 
 <ng-container *ngIf="books$ | async as books">
   <div class="table-container">
-    <table mat-table [dataSource]="books" class="mat-elevation-z2">
-      <ng-container matColumnDef="isbn">
-        <th mat-header-cell *matHeaderCellDef>ISBN</th>
-        <td mat-cell *matCellDef="let book">{{ book.isbn }}</td>
-      </ng-container>
+    <cdk-virtual-scroll-viewport itemSize="56" class="virtual-scroll-viewport" [style.height.px]="500">
+      <table mat-table [dataSource]="books" class="mat-elevation-z2">
+        <ng-container matColumnDef="isbn">
+          <th mat-header-cell *matHeaderCellDef>ISBN</th>
+          <td mat-cell *matCellDef="let book">{{ book.isbn }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef>Title</th>
-        <td mat-cell *matCellDef="let book">{{ book.title }}</td>
-      </ng-container>
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let book">{{ book.title }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="authors">
-        <th mat-header-cell *matHeaderCellDef>Authors</th>
-        <td mat-cell *matCellDef="let book">{{ book.authors.join(', ') }}</td>
-      </ng-container>
+        <ng-container matColumnDef="authors">
+          <th mat-header-cell *matHeaderCellDef>Authors</th>
+          <td mat-cell *matCellDef="let book">{{ book.authors.join(', ') }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="category">
-        <th mat-header-cell *matHeaderCellDef>Category</th>
-        <td mat-cell *matCellDef="let book">{{ book.category }}</td>
-      </ng-container>
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Category</th>
+          <td mat-cell *matCellDef="let book">{{ book.category }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="year">
-        <th mat-header-cell *matHeaderCellDef>Year</th>
-        <td mat-cell *matCellDef="let book">{{ book.year }}</td>
-      </ng-container>
+        <ng-container matColumnDef="year">
+          <th mat-header-cell *matHeaderCellDef>Year</th>
+          <td mat-cell *matCellDef="let book">{{ book.year }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef>Price</th>
-        <td mat-cell *matCellDef="let book">${{ book.price }}</td>
-      </ng-container>
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let book">${{ book.price }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let book">
-          <button
-            mat-icon-button
-            color="primary"
-            [routerLink]="['/books', book.isbn, 'edit']"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="confirmDelete(book)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let book">
+            <button
+              mat-icon-button
+              color="primary"
+              [routerLink]="['/books', book.isbn, 'edit']"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="confirmDelete(book)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </cdk-virtual-scroll-viewport>
     <div class="no-results" *ngIf="(books$ | async)?.length === 0">
       <mat-icon>search_off</mat-icon>
       No results found.

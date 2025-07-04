@@ -35,6 +35,7 @@ import { CategorySelect } from '../../../shared/components/category-select/categ
 import { Book } from '../../../core/models/book.model';
 import { APP_CONFIG } from '../../../core/constants/app-config';
 import { NotificationService } from '../../../core/services/notification.service';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-book-table',
@@ -52,6 +53,7 @@ import { NotificationService } from '../../../core/services/notification.service
     MatButtonModule,
     MatDialogModule,
     CategorySelect,
+    ScrollingModule,
   ],
   templateUrl: './book-table.html',
   styleUrls: ['./book-table.scss'],

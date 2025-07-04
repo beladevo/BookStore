@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, retry } from 'rxjs';
 import { ApiService } from './api.service';
 import { API_ROUTES } from '../constants/api-routes';
 import { PagedResponse } from '../models/api/api-response.model';
@@ -24,7 +24,16 @@ export class BookService {
       category,
     });
 
-    return this.api.get<PagedResponse<Book>>(API_ROUTES.BOOKS, { params });
+    return this.api.get<PagedResponse<Book>>(API_ROUTES.BOOKS, { params }).pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: any): Observable<never> {
+    // later we can use monitoring service here like datadog, analytics, etc.
+    console.error('An error occurred:', error);
+    throw error;
   }
 
   getByIsbn(isbn: string): Observable<Book> {

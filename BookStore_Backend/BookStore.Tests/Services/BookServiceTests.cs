@@ -1,10 +1,12 @@
-﻿using Xunit;
-using Moq;
-using FluentAssertions;
-using BookStore.Application.Services;
+﻿using BookStore.Application.Services;
 using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
+using FluentAssertions;
+using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Xunit;
 
 namespace BookStore.Tests.Services
 {
@@ -12,16 +14,18 @@ namespace BookStore.Tests.Services
     {
         private readonly Mock<IBookRepository> _repoMock;
         private readonly IMemoryCache _cache;
+        private readonly Mock<ILogger<BookService>> _loggerMock;
+        private readonly Mock<IValidator<Book>> _validatorMock;
         private readonly BookService _service;
 
         public BookServiceTests()
         {
             _repoMock = new Mock<IBookRepository>();
+            _loggerMock = new Mock<ILogger<BookService>>();
+            _validatorMock = new Mock<IValidator<Book>>();
 
-            // Use real memory cache
             _cache = new MemoryCache(new MemoryCacheOptions());
-
-            _service = new BookService(_repoMock.Object, _cache);
+            _service = new BookService(_repoMock.Object, _cache, _loggerMock.Object, _validatorMock.Object);
         }
 
         [Fact]
