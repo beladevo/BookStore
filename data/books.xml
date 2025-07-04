@@ -1,12 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <books>
-  <book category="Fiction">
-    <isbn>978-0000000001</isbn>
-    <title>The Whispering Shadows</title>
-    <author>Jane Doe</author>
-    <year>2015</year>
-    <price>19.99</price>
-  </book>
   <book category="Technology">
     <isbn>978-0000000002</isbn>
     <title>Learning C# Fundamentals</title>
@@ -196,18 +189,18 @@
     <year>2014</year>
     <price>21.00</price>
   </book>
-  <book category="Technology">
-    <isbn>978-0000000029</isbn>
-    <title>Clean Code</title>
-    <author>Robert C. Martin</author>
-    <year>2008</year>
-    <price>35.00</price>
-  </book>
   <book category="Science">
     <isbn>978-0000000030</isbn>
     <title>A Brief History of Time</title>
     <author>Stephen Hawking</author>
     <year>1988</year>
     <price>19.95</price>
+  </book>
+  <book category="GEGU">
+    <isbn>123nsn</isbn>
+    <title>DAN BOOK</title>
+    <author>DAN BEKADEV</author>
+    <year>2020</year>
+    <price>200</price>
   </book>
 </books>

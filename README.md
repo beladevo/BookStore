@@ -77,7 +77,7 @@ services:
     build:
       context: ./BookStore_Backend
     ports:
-      - "5000:80"
+      - "5001:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - BookStore__XmlFilePath=/data/books.xml
@@ -99,7 +99,7 @@ To build and start the entire system:
 docker-compose up --build
 ```
 
-The backend will be available at `http://localhost:5000`, and the frontend at `http://localhost:4200`.
+The backend will be available at `http://localhost:5001`, and the frontend at `http://localhost:4200`.
 
 ## API Endpoints
 
@@ -122,7 +122,7 @@ The backend will be available at `http://localhost:5000`, and the frontend at `h
    dotnet run --project BookStore.API
    ```
 
-Backend will be available at `http://localhost:5000` by default.
+Backend will be available at `http://localhost:5001` by default.
 
 ## Development (Frontend)
 
