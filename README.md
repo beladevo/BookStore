@@ -67,7 +67,7 @@ This project includes a Docker Compose setup to run both services together.
 docker-compose up --build
 ```
 
-* Backend: [http://localhost:5001](http://localhost:5001)
+* Backend: [https://localhost:5001](https://localhost:5001)
 * Frontend: [http://localhost:4200](http://localhost:4200)
 
 ### Example docker-compose.yml
