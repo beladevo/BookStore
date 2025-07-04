@@ -55,4 +55,17 @@ describe('BookTable', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should load books', (done) => {
+    const bookService = TestBed.inject(BookService);
+    (bookService.getAll as jasmine.Spy).and.returnValue(
+      of({ totalCount: 1, items: [{ isbn: '1', title: 'T', authors: ['A'], category: 'C', year: 2020, price: 1 }] })
+    );
+    component.ngOnInit();
+    component.books$.subscribe(books => {
+      expect(books.length).toBe(1);
+      expect(books[0].title).toBe('T');
+      done();
+    });
+  });
 });

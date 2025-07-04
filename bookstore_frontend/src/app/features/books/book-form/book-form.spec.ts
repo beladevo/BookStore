@@ -57,4 +57,9 @@ describe('BookForm', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should invalidate form if required fields are missing', () => {
+    component.form.patchValue({ title: '', isbn: '', authors: '', category: '', year: '', price: '' });
+    expect(component.form.invalid).toBeTrue();
+  });
 });
