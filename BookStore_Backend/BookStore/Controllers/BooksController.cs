@@ -1,4 +1,5 @@
-﻿using BookStore.Core.Entities;
+﻿using BookStore.API.Models;
+using BookStore.Core.Entities;
 using BookStore.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,14 +18,16 @@ public class BooksController : ControllerBase
 
     [HttpGet]
     public IActionResult GetPaged(
-    [FromQuery] int pageNumber = 1,
-    [FromQuery] int pageSize = 10,
-    [FromQuery] string? search = null,
-    [FromQuery] string? category = null)
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? search = null,
+        [FromQuery] string? category = null)
     {
+
+        if (pageSize < 1 || pageSize > 20)
+            return BadRequest(new { message = "Invalid operation!" });
+
         var (totalCount, items) = _service.GetPaged(pageNumber, pageSize, search, category);
-        //Thread.Sleep(1000);
-        //return BadRequest("");
         return Ok(new
         {
             totalCount,
@@ -33,11 +36,12 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet("{isbn}")]
-    public ActionResult<Book> GetByIsbn(string isbn)
+    public ActionResult<BookResponse> GetByIsbn(string isbn)
     {
         try
         {
-            return _service.GetByIsbn(isbn);
+            var book = _service.GetByIsbn(isbn);
+            return Ok(MapToResponse(book));
         }
         catch (KeyNotFoundException ex)
         {
@@ -46,12 +50,17 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] Book book)
+    public IActionResult Add([FromBody] BookRequest request)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var book = MapToEntity(request);
+
         try
         {
             _service.Add(book);
-            return CreatedAtAction(nameof(GetByIsbn), new { isbn = book.Isbn }, book);
+            return CreatedAtAction(nameof(GetByIsbn), new { isbn = book.Isbn }, MapToResponse(book));
         }
         catch (InvalidOperationException ex)
         {
@@ -60,8 +69,13 @@ public class BooksController : ControllerBase
     }
 
     [HttpPut("{isbn}")]
-    public IActionResult Update(string isbn, [FromBody] Book book)
+    public IActionResult Update(string isbn, [FromBody] BookRequest request)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var book = MapToEntity(request);
+
         try
         {
             _service.Update(isbn, book);
@@ -147,6 +161,32 @@ public class BooksController : ControllerBase
         html += "</table></body></html>";
 
         return html;
+    }
+
+    private static Book MapToEntity(BookRequest request)
+    {
+        return new Book
+        {
+            Isbn = request.Isbn,
+            Title = request.Title,
+            Authors = request.Authors,
+            Category = request.Category,
+            Year = request.Year,
+            Price = request.Price
+        };
+    }
+
+    private static BookResponse MapToResponse(Book book)
+    {
+        return new BookResponse
+        {
+            Isbn = book.Isbn,
+            Title = book.Title,
+            Authors = book.Authors,
+            Category = book.Category,
+            Year = book.Year,
+            Price = book.Price
+        };
     }
 
 }

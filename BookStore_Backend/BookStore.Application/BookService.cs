@@ -1,17 +1,18 @@
-﻿using BookStore.Application.Services;
-using BookStore.Core.Entities;
+﻿using BookStore.Core.Entities;
 using BookStore.Core.Exceptions;
 using BookStore.Core.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BookStore.Application.Services
 {
     public class BookService : IBookService
     {
         private readonly IBookRepository _repository;
-
-        public BookService(IBookRepository repository)
+        private readonly IMemoryCache _cache;
+        public BookService(IBookRepository repository, IMemoryCache cache)
         {
             _repository = repository;
+            _cache = cache;
         }
 
         public List<Book> GetAll()
@@ -62,16 +63,19 @@ namespace BookStore.Application.Services
 
         public List<string> GetDistinctCategories()
         {
-            var books = _repository.GetAll()
-                        .Take(500)
-                        .ToList();
+            var categories = _cache.GetOrCreate("categories", entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+                var books = _repository.GetAll() ?? new List<Book>();
+                return books
+                    .Where(b => !string.IsNullOrWhiteSpace(b.Category))
+                    .GroupBy(b => b.Category, StringComparer.OrdinalIgnoreCase)
+                    .OrderByDescending(g => g.Count())
+                    .Select(g => g.Key)
+                    .ToList();
+            });
 
-            return books
-                .Where(b => !string.IsNullOrWhiteSpace(b.Category))
-                .GroupBy(b => b.Category, StringComparer.OrdinalIgnoreCase)
-                .OrderByDescending(g => g.Count())
-                .Select(g => g.Key)
-                .ToList();
+            return categories ?? new List<string>();
         }
 
         public void Add(Book book)
