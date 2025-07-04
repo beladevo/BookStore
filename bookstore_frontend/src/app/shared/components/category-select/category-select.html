@@ -1,0 +1,21 @@
+<mat-form-field appearance="outline" class="full-width">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    type="text"
+    matInput
+    [matAutocomplete]="auto"
+    [value]="value"
+    (input)="onChange($any($event.target).value)"
+    (blur)="onTouched()"
+    placeholder="Choose or type a category"
+  />
+  <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+    <mat-option
+      *ngFor="let cat of categories$ | async"
+      [value]="cat"
+      (onSelectionChange)="onSelectOption($event, cat)"
+    >
+      {{ cat }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

@@ -1,0 +1,112 @@
+# Build results
+bin/*
+obj/
+[Bb]uild/
+[Ll]og/
+[Ll]ogs/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.userprefs
+
+# Visual Studio Code settings
+.vscode/
+
+# Rider settings
+.idea/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# NuGet packages
+*.nupkg
+*.snupkg
+# The packages folder can be ignored if you use PackageReference
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+
+# NPM packages
+node_modules/
+
+# Dotnet tool restore
+.dotnet/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Publish results
+publish/
+out/
+
+# Local database files
+*.mdf
+*.ldf
+*.ndf
+
+# Others
+*.db
+*.sqlite
+*.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Temporary files
+~$*
+*.tmp
+*.temp
+
+# Application secrets
+secrets.json
+
+# Ignore appsettings for local and secrets
+appsettings.Development.json
+appsettings.Local.json
+appsettings.Secrets.json
+
+
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+
+# Visual Studio Code
+.vscode
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio 2015
+.vs/

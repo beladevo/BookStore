@@ -1,0 +1,35 @@
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+
+  .branding {
+    display: flex;
+    align-items: center;
+
+    .logo {
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+
+    .title {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+  }
+
+  .slogan {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+main {
+  padding: 1rem;
+}
