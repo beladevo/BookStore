@@ -40,6 +40,9 @@ public class BooksController : ControllerBase
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(isbn))
+                return BadRequest(new { message = "ISBN is required." });
+
             var book = _service.GetByIsbn(isbn);
             return Ok(MapToResponse(book));
         }

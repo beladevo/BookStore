@@ -86,8 +86,51 @@ export class BookForm implements OnInit {
     }
   }
 
+  private validateBookForm(): boolean {
+    const isbn = this.form.get('isbn')?.value?.trim();
+    const title = this.form.get('title')?.value?.trim();
+    const authorsRaw = this.form.get('authors')?.value;
+    const authors = authorsRaw
+      ? authorsRaw
+          .split(',')
+          .map((a: string) => a.trim())
+          .filter((a: string) => a)
+      : [];
+    const category = this.form.get('category')?.value?.trim();
+    const year = Number(this.form.get('year')?.value);
+    const price = Number(this.form.get('price')?.value);
+    const currentYear = new Date().getFullYear();
+
+    if (!isbn) {
+      this.notify.error('ISBN is required.');
+      return false;
+    }
+    if (!title) {
+      this.notify.error('Title is required.');
+      return false;
+    }
+    if (!authors.length || authors.some((a: string) => !a)) {
+      this.notify.error('At least one author is required and cannot be empty.');
+      return false;
+    }
+    if (!category) {
+      this.notify.error('Category is required.');
+      return false;
+    }
+    if (isNaN(year) || year < 1000 || year > currentYear + 1) {
+      this.notify.error('Invalid year.');
+      return false;
+    }
+    if (isNaN(price) || price < 0) {
+      this.notify.error('Price cannot be negative.');
+      return false;
+    }
+    return true;
+  }
+
   save() {
     if (this.form.invalid) return;
+    if (!this.validateBookForm()) return;
 
     const authorsArray = this.form
       .get('authors')
@@ -105,11 +148,14 @@ export class BookForm implements OnInit {
       this.bookService.update(this.isbn!, updatedBook).subscribe({
         next: () => {
           this.router.navigate(['/']);
+          this.notify.success(
+            `Book "${updatedBook.title}" updated successfully.`
+          );
         },
         error: (error) => {
           console.error('[Update Error]', error);
           const message = error?.error?.message ?? 'Failed to update book.';
-          this.notify.show(message);
+          this.notify.error(message);
         },
       });
     } else {
@@ -121,11 +167,12 @@ export class BookForm implements OnInit {
       this.bookService.create(newBook).subscribe({
         next: () => {
           this.router.navigate(['/']);
+          this.notify.success(`Book "${newBook.title}" created successfully.`);
         },
         error: (error) => {
           console.error('[Create Error]', error);
           const message = error?.error?.message ?? 'Failed to create book.';
-          this.notify.show(message);
+          this.notify.error(message);
         },
       });
     }
@@ -144,11 +191,14 @@ export class BookForm implements OnInit {
         this.bookService.delete(this.isbn).subscribe({
           next: () => {
             this.router.navigate(['/']);
+            this.notify.success(
+              `Book "${this.form.get('title')?.value}" deleted successfully.`
+            );
           },
           error: (error) => {
             console.error('[Delete Error]', error);
             const message = error?.error?.message ?? 'Failed to delete book.';
-            this.notify.show(message);
+            this.notify.error(message);
           },
         });
       }

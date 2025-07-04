@@ -63,10 +63,10 @@ namespace BookStore.Data.Repositories
                     var doc = XDocument.Load(_filePath);
 
                     var newBook = new XElement("book",
-                        new XAttribute("category", book.Category),
-                        new XElement("isbn", book.Isbn),
-                        new XElement("title", book.Title),
-                        book.Authors.Select(a => new XElement("author", a)),
+                        new XAttribute("category", EscapeXml(book.Category)),
+                        new XElement("isbn", EscapeXml(book.Isbn)),
+                        new XElement("title", EscapeXml(book.Title)),
+                        book.Authors.Select(a => new XElement("author", EscapeXml(a))),
                         new XElement("year", book.Year),
                         new XElement("price", book.Price)
                     );
@@ -99,11 +99,11 @@ namespace BookStore.Data.Repositories
                     if (bookElement == null)
                         throw new InvalidOperationException($"Book with ISBN {isbn} not found.");
 
-                    bookElement.SetAttributeValue("category", book.Category);
-                    bookElement.Element("title")!.Value = book.Title;
+                    bookElement.SetAttributeValue("category", EscapeXml(book.Category));
+                    bookElement.Element("title")!.Value = EscapeXml(book.Title);
                     bookElement.Elements("author").Remove();
                     foreach (var author in book.Authors)
-                        bookElement.Add(new XElement("author", author));
+                        bookElement.Add(new XElement("author", EscapeXml(author)));
                     bookElement.Element("year")!.Value = book.Year.ToString();
                     bookElement.Element("price")!.Value = book.Price.ToString();
 
@@ -159,6 +159,11 @@ namespace BookStore.Data.Repositories
                 var doc = new XDocument(new XElement("books"));
                 doc.Save(_filePath);
             }
+        }
+
+        private static string EscapeXml(string value)
+        {
+            return System.Security.SecurityElement.Escape(value);
         }
     }
 }

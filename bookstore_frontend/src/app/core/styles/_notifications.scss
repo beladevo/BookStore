@@ -1,0 +1,38 @@
+.app-notification {
+  &.app-notification-success {
+    .mdc-snackbar__surface {
+      background-color: #4caf50;
+    }
+  }
+
+  &.app-notification-error {
+    .mdc-snackbar__surface {
+      background-color: #f44336;
+    }
+  }
+
+  &.app-notification-warning {
+    .mdc-snackbar__surface {
+      background-color: #ff9800;
+    }
+  }
+
+  &.app-notification-info {
+    .mdc-snackbar__surface {
+      background-color: #2196f3;
+    }
+  }
+
+  .mdc-snackbar__surface {
+    border-radius: 4px;
+  }
+
+  .mdc-snackbar__label {
+    color: white;
+    font-weight: 500;
+  }
+
+  .mat-mdc-button {
+    color: white;
+  }
+}

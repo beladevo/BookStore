@@ -1,5 +1,6 @@
 using BookStore.Application.Services;
 using BookStore.Core.Interfaces;
+using BookStore.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ var xmlPath = builder.Configuration["BookStore:XmlFilePath"]
 builder.Services.AddSingleton<IBookRepository>(new XmlBookRepository(xmlPath));
 
 builder.Services.AddScoped<IBookService, BookService>();
+
+builder.Services.AddMemoryCache();
 
 var AllowSpecificOriginsPolicy = "_AllowSpecificOrigins";
 builder.Services.AddCors(options =>

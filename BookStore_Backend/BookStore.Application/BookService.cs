@@ -127,10 +127,15 @@ namespace BookStore.Application.Services
                 throw new BusinessLogicException("Category is required.");
 
             if (book.Year < 1000 || book.Year > DateTime.UtcNow.Year + 1)
-                throw new BusinessLogicException($"Year '{book.Year}' is invalid.");
+                throw new BusinessLogicException($"Invalid year.");
 
             if (book.Price < 0)
                 throw new BusinessLogicException("Price cannot be negative.");
+        }
+
+        private string EscapeText(string text)
+        {
+            return System.Security.SecurityElement.Escape(text);
         }
     }
     #endregion

@@ -110,7 +110,7 @@ export class BookTable implements OnInit {
             map((response) => response.items),
             catchError((error: any) => {
               console.error('Error loading books:', error);
-              this.notify.show('Failed to load books. Please try again later.');
+              this.notify.error('Failed to load books. Please try again later.');
               return of([]);
             })
           )
@@ -137,11 +137,12 @@ export class BookTable implements OnInit {
         this.bookService.delete(book.isbn).subscribe({
           next: () => {
             this.page$.next({ ...this.page$.value });
+            this.notify.success(`Book "${book.title}" deleted successfully.`);
           },
           error: (error) => {
             console.error('[Delete Error]', error);
             const message = error?.error?.message ?? 'Failed to delete book.';
-            this.notify.show(message);
+            this.notify.error(message);
           },
         });
       }
