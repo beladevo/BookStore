@@ -1,20 +1,28 @@
 .header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
   margin-bottom: 1.5rem;
 
   h2 {
     display: flex;
     align-items: center;
     font-weight: 500;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin: 0;
 
     mat-icon {
       margin-right: 0.5rem;
-      color: #673ab7;
+      color: var(--primary-color);
     }
+  }
+
+  .header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 }
 
@@ -34,7 +42,12 @@
   margin-bottom: 1rem;
 
   table {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
     width: 100%;
+    min-width: 600px;
   }
 
   .no-results {
