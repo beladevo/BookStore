@@ -1,8 +1,8 @@
-version: '3.9'
 services:
   backend:
     build:
       context: ./BookStore_Backend
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     environment:
@@ -13,6 +13,7 @@ services:
 
   frontend:
     build:
-      context: ./BookStore_Frontend
+      context: ./bookstore_frontend
+      dockerfile: Dockerfile
     ports:
       - "4200:80"
