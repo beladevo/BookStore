@@ -28,6 +28,7 @@ import {
   debounceTime,
   catchError,
   of,
+  shareReplay,
 } from 'rxjs';
 import { DownloadService } from '../../../core/services/download.service';
 import { CategorySelect } from '../../../shared/components/category-select/category-select';
@@ -88,6 +89,8 @@ export class BookTable implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log('on init');
+    
     this.initialPageSize =
       this.storage.get<number>(CACHE_KEYS.BOOKS_PAGE_SIZE) ??
       APP_CONFIG.DEFAULT_PAGE_SIZE;
@@ -103,7 +106,9 @@ export class BookTable implements OnInit {
       this.category$,
     ]).pipe(
       switchMap(([page, search, category]) =>
-        this.bookService
+      {
+        console.log('on switch map');
+        return this.bookService
           .getAll(page.pageIndex + 1, page.pageSize, search, category)
           .pipe(
             tap((response) => (this.totalCount = response.totalCount)),
@@ -114,7 +119,11 @@ export class BookTable implements OnInit {
               return of([]);
             })
           )
-      )
+          
+        }
+      ),
+      shareReplay(1)
+
     );
   }
 
