@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<books>
+  <book category="Fiction">
+    <isbn>978-0000000001</isbn>
+    <title>The Whispering Shadows</title>
+    <author>Jane Doe</author>
+    <year>2015</year>
+    <price>19.99</price>
+  </book>
+  <book category="Technology">
+    <isbn>978-0000000002</isbn>
+    <title>Learning C# Fundamentals</title>
+    <author>John Smith</author>
+    <year>2020</year>
+    <price>39.50</price>
+  </book>
+  <book category="Science">
+    <isbn>978-0000000003</isbn>
+    <title>The Quantum Enigma</title>
+    <author>Albert Newton</author>
+    <year>2018</year>
+    <price>28.75</price>
+  </book>
+  <book category="Fiction">
+    <isbn>978-0000000004</isbn>
+    <title>Midnight Over Omri</title>
+    <author>Lisa Brown</author>
+    <year>2019</year>
+    <price>14.99</price>
+  </book>
+  <book category="Biography">
+    <isbn>978-0000000005</isbn>
+    <title>My Life in Code</title>
+    <author>Michael Johnson</author>
+    <year>2016</year>
+    <price>22.00</price>
+  </book>
+  <book category="History">
+    <isbn>978-0000000006</isbn>
+    <title>Empires of the Ancient World</title>
+    <author>Patricia Green</author>
+    <year>2014</year>
+    <price>26.50</price>
+  </book>
+  <book category="Fantasy">
+    <isbn>978-0000000007</isbn>
+    <title>The Beladev Chronicles</title>
+    <author>Omri Beladev</author>
+    <year>2021</year>
+    <price>18.99</price>
+  </book>
+  <book category="Science Fiction">
+    <isbn>978-0000000008</isbn>
+    <title>Stars Beyond Tomorrow</title>
+    <author>Rachel Adams</author>
+    <year>2017</year>
+    <price>23.50</price>
+  </book>
+  <book category="Technology">
+    <isbn>978-0000000009</isbn>
+    <title>Mastering Angular</title>
+    <author>Robert Lee</author>
+    <year>2022</year>
+    <price>44.95</price>
+  </book>
+  <book category="Non-Fiction">
+    <isbn>978-0000000010</isbn>
+    <title>Deep Work and Focus</title>
+    <author>Cal Newport</author>
+    <year>2016</year>
+    <price>21.99</price>
+  </book>
+  <book category="Fiction">
+    <isbn>978-0000000011</isbn>
+    <title>The Ocean Between Us</title>
+    <author>Emily Clark</author>
+    <year>2018</year>
+    <price>16.75</price>
+  </book>
+  <book category="Business">
+    <isbn>978-0000000012</isbn>
+    <title>Startup Success Stories</title>
+    <author>Anna Davis</author>
+    <year>2020</year>
+    <price>29.00</price>
+  </book>
+  <book category="Self-Help">
+    <isbn>978-0000000013</isbn>
+    <title>Atomic Habits</title>
+    <author>James Clear</author>
+    <year>2019</year>
+    <price>17.95</price>
+  </book>
+  <book category="Fantasy">
+    <isbn>978-0000000014</isbn>
+    <title>The Hidden Realms</title>
+    <author>Chris Martin</author>
+    <year>2015</year>
+    <price>24.50</price>
+  </book>
+  <book category="Biography">
+    <isbn>978-0000000015</isbn>
+    <title>Beladev: A Life Unscripted</title>
+    <author>Omri Beladev</author>
+    <year>2023</year>
+    <price>27.99</price>
+  </book>
+  <book category="Science">
+    <isbn>978-0000000016</isbn>
+    <title>Evolutionary Biology Explained</title>
+    <author>Laura White</author>
+    <year>2017</year>
+    <price>31.00</price>
+  </book>
+  <book category="Technology">
+    <isbn>978-0000000017</isbn>
+    <title>DevOps in Practice</title>
+    <author>Daniel King</author>
+    <year>2021</year>
+    <price>42.25</price>
+  </book>
+  <book category="Fiction">
+    <isbn>978-0000000018</isbn>
+    <title>The Last Horizon</title>
+    <author>Karen Young</author>
+    <year>2018</year>
+    <price>15.60</price>
+  </book>
+  <book category="Non-Fiction">
+    <isbn>978-0000000019</isbn>
+    <title>Mindfulness for Beginners</title>
+    <author>Susan Scott</author>
+    <year>2019</year>
+    <price>19.80</price>
+  </book>
+  <book category="Fantasy">
+    <isbn>978-0000000020</isbn>
+    <title>Omri's Quest</title>
+    <author>John Carter</author>
+    <year>2020</year>
+    <price>20.00</price>
+  </book>
+  <book category="Business">
+    <isbn>978-0000000021</isbn>
+    <title>Leading Remote Teams</title>
+    <author>Mary Evans</author>
+    <year>2022</year>
+    <price>25.90</price>
+  </book>
+  <book category="History">
+    <isbn>978-0000000022</isbn>
+    <title>World War II: A Complete History</title>
+    <author>Peter Hall</author>
+    <year>2013</year>
+    <price>32.45</price>
+  </book>
+  <book category="Science Fiction">
+    <isbn>978-0000000023</isbn>
+    <title>Galactic Frontiers</title>
+    <author>Alice Green</author>
+    <year>2021</year>
+    <price>22.75</price>
+  </book>
+  <book category="Biography">
+    <isbn>978-0000000024</isbn>
+    <title>Steve Jobs: The Exclusive Biography</title>
+    <author>Walter Isaacson</author>
+    <year>2011</year>
+    <price>24.99</price>
+  </book>
+  <book category="Non-Fiction">
+    <isbn>978-0000000025</isbn>
+    <title>The Art of Thinking Clearly</title>
+    <author>Rolf Dobelli</author>
+    <year>2014</year>
+    <price>18.00</price>
+  </book>
+  <book category="Fiction">
+    <isbn>978-0000000026</isbn>
+    <title>Between Two Worlds</title>
+    <author>Sarah Lewis</author>
+    <year>2017</year>
+    <price>13.95</price>
+  </book>
+  <book category="Self-Help">
+    <isbn>978-0000000027</isbn>
+    <title>The Power of Now</title>
+    <author>Eckhart Tolle</author>
+    <year>1999</year>
+    <price>15.50</price>
+  </book>
+  <book category="Business">
+    <isbn>978-0000000028</isbn>
+    <title>Zero to One</title>
+    <author>Peter Thiel</author>
+    <year>2014</year>
+    <price>21.00</price>
+  </book>
+  <book category="Technology">
+    <isbn>978-0000000029</isbn>
+    <title>Clean Code</title>
+    <author>Robert C. Martin</author>
+    <year>2008</year>
+    <price>35.00</price>
+  </book>
+  <book category="Science">
+    <isbn>978-0000000030</isbn>
+    <title>A Brief History of Time</title>
+    <author>Stephen Hawking</author>
+    <year>1988</year>
+    <price>19.95</price>
+  </book>
+</books>

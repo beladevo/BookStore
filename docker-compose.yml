@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: ./BookStore_Backend
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - BookStore__XmlFilePath=/data/books.xml
+    volumes:
+      - ./data/books.xml:/data/books.xml
+
+  frontend:
+    build:
+      context: ./BookStore_Frontend
+    ports:
+      - "4200:80"
