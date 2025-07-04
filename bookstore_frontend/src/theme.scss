@@ -1,20 +1,46 @@
 @use '@angular/material' as mat;
 
+$bookstore-colors: (
+  primary: mat.$m2-indigo-palette,
+  secondary: mat.$red-palette,
+  tertiary: mat.$orange-palette,
+  warn: mat.$red-palette,
+  neutral: mat.$m2-orange-palette,
+  theme-type: color-scheme,
+);
+
+$bookstore-typography: (
+  plain-family: 'Open Sans, Arial, sans-serif',
+  brand-family: 'Roboto',
+  bold-weight: 900,
+  medium-weight: 500,
+  regular-weight: 300,
+  light-weight: 100,
+);
+
 html {
   color-scheme: light dark;
-
   @include mat.theme((
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$azure-palette,
-      theme-type: light
-    ),
-    typography: 'Roboto',
-    density: -1
+    color: $bookstore-colors,
+    typography: $bookstore-typography,
+    density: 0,
   ));
 }
 
 body {
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
+  font-family: var(--mat-typescale-plain-family, 'Open Sans, Roboto, Arial, sans-serif');
+  transition: background 0.2s, color 0.2s;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
 }
