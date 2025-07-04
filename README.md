@@ -1,8 +1,30 @@
 # BookStore Project
 
-## Overview
+![.NET](https://img.shields.io/badge/.NET-8.0-blue)
+![Angular](https://img.shields.io/badge/Angular-v20-red)
+![Docker](https://img.shields.io/badge/docker-ready-blue)
 
-BookStore is a clean-architecture .NET solution with an Angular frontend. It provides a complete system for managing books with XML persistence, advanced filtering, and Docker support.
+## Table of Contents
+
+* [Overview](#overview)
+* [Features](#features)
+* [Configuration](#configuration)
+* [Running with Docker](#running-with-docker)
+* [API Endpoints](#api-endpoints)
+* [Development](#development)
+
+  * [Backend](#backend)
+  * [Frontend](#frontend)
+* [Known Issues](#known-issues)
+* [Future Work](#future-work)
+* [Screenshots](#screenshots)
+* [License](#license)
+* [Credits](#credits)
+
+## Overview
+I've been asked to build this project to manage books and treat the XML file as if it were a database, providing full persistence and CRUD functionality.
+
+BookStore is a clean-architecture .NET solution with an Angular frontend. It provides a full system for managing books stored in XML format, offering filtering, reporting, and Docker support.
 
 ## Features
 
@@ -10,44 +32,13 @@ BookStore is a clean-architecture .NET solution with an Angular frontend. It pro
 * Pagination, keyword search, and category filtering
 * Distinct category listing ordered by popularity
 * HTML report generation with UTC timestamp
-* Configurable XML file path per environment
-* Clean Architecture following SOLID principles
-* Docker and Docker Compose ready
-
-## Project Structure
-
-```
-BookStore.Core
-  ├── Entities
-  │   └── Book.cs
-  ├── Interfaces
-  │   ├── IBookRepository.cs
-  │   └── IBookService.cs
-  └── Exceptions
-      └── BusinessLogicException.cs
-
-BookStore.Application
-  └── Services
-      └── BookService.cs
-
-BookStore.Data
-  └── Repositories
-      └── XmlBookRepository.cs
-
-BookStore.API
-  ├── Controllers
-  │   └── BooksController.cs
-  ├── Middleware
-  │   └── ExceptionHandlingMiddleware.cs
-  └── Program.cs
-
-bookstore_frontend
-  └── Angular v20 application
-```
+* Configurable XML file path per environment (development, production, testing)
+* Clean Architecture and SOLID principles
+* Docker Compose support for running backend and frontend together
 
 ## Configuration
 
-The XML data file path is set in `appsettings.json`:
+The XML data file path is defined in `appsettings.json`:
 
 ```json
 "BookStore": {
@@ -55,20 +46,31 @@ The XML data file path is set in `appsettings.json`:
 }
 ```
 
-You can override this per environment:
+You can override this value in production:
 
-* `appsettings.Production.json`
-* Environment variable:
+* Via `appsettings.Production.json`
+* Or with an environment variable:
 
   ```bash
   BookStore__XmlFilePath=/data/books.xml
   ```
 
+When running in Docker, `/data/books.xml` is mounted via a volume to your host `./data/books.xml`. Make sure this file exists or is created on first run.
+
 ## Running with Docker
 
-This project includes a Docker configuration to run the backend and frontend together.
+This project includes a Docker Compose setup to run both services together.
 
-### Docker Compose Example
+### Quick Start
+
+```bash
+docker-compose up --build
+```
+
+* Backend: [http://localhost:5001](http://localhost:5001)
+* Frontend: [http://localhost:4200](http://localhost:4200)
+
+### Example docker-compose.yml
 
 ```yaml
 version: "3.9"
@@ -91,30 +93,24 @@ services:
       - "4200:80"
 ```
 
-### Running All Services
-
-To build and start the entire system:
-
-```bash
-docker-compose up --build
-```
-
-The backend will be available at `http://localhost:5001`, and the frontend at `http://localhost:4200`.
-
 ## API Endpoints
 
-* `GET /api/books` – Retrieve a paged list of books with optional search and category filters
-* `GET /api/books/{isbn}` – Retrieve a single book by ISBN
-* `POST /api/books` – Create a new book
-* `PUT /api/books/{isbn}` – Update an existing book
-* `DELETE /api/books/{isbn}` – Delete a book
-* `GET /api/books/categories` – Retrieve all distinct categories
-* `GET /api/books/report` – Download an HTML report
+| Method | Endpoint                | Description                             |
+| ------ | ----------------------- | --------------------------------------- |
+| GET    | `/api/books`            | Retrieve paged books with search/filter |
+| GET    | `/api/books/{isbn}`     | Retrieve a single book by ISBN          |
+| POST   | `/api/books`            | Create a new book                       |
+| PUT    | `/api/books/{isbn}`     | Update an existing book                 |
+| DELETE | `/api/books/{isbn}`     | Delete a book                           |
+| GET    | `/api/books/categories` | Retrieve distinct categories            |
+| GET    | `/api/books/report`     | Download an HTML report                 |
 
-## Development (Backend)
+## Development
+
+### Backend
 
 1. Clone the repository.
-2. Update `BookStore:XmlFilePath` in `appsettings.json`.
+2. Configure `BookStore:XmlFilePath`.
 3. Run:
 
    ```bash
@@ -122,50 +118,47 @@ The backend will be available at `http://localhost:5001`, and the frontend at `h
    dotnet run --project BookStore.API
    ```
 
-Backend will be available at `http://localhost:5001` by default.
+The backend will be available at `http://localhost:5001`.
 
-## Development (Frontend)
+### Frontend
 
-The Angular frontend is built with Angular v20 using Standalone Components and Angular Material.
+Built with Angular v20, Standalone Components, and Angular Material.
 
-### Features
+**Features:**
 
-* Paginated list of books with search and filtering
+* Paginated book listing with search and filters
 * Add, edit, and delete books
 * Download HTML report
-* Persist user preferences (page size, filters) in local storage
+* Save user preferences in local storage
 
-### Technologies
+**Technologies:**
 
-* **Angular Standalone Components** for modular design
-* **Angular Material** for UI
-* **RxJS** for state management
+* Angular Standalone Components
+* Angular Material
+* RxJS
 
-### Running Frontend
-
-1. Navigate to the `bookstore_frontend` folder.
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-
-   ```bash
-   ng serve
-   ```
-
-4. Access the app at `http://localhost:4200`.
-
-### Building Frontend
-
-To create a production build:
+**Running Frontend:**
 
 ```bash
-ng build --configuration production
+cd bookstore_frontend
+npm install
+npm start
 ```
+
+Access at `http://localhost:4200`.
+
+**Production Build:**
+
+```bash
+npm run build:prod
+```
+
+## Screenshots
+
+![Book List](docs/screenshot-list.png)
+
+![Book Details](docs/screenshot-details.png)
+
 
 ## Credits
 
