@@ -45,6 +45,32 @@ The XML data file path is defined in `appsettings.json`:
   "XmlFilePath": "data/books.xml"
 }
 ```
+**Configuring XmlFilePath**
+You can define `XmlFilePath` in several ways, in order of precedence:
+
+**By Command-line argument**
+Example:
+
+```
+dotnet run --BookStore:XmlFilePath="C:\\data\\books.xml"
+```
+
+**By Environment variable**
+Example (Linux):
+
+```
+export BookStore__XmlFilePath=/data/books.xml
+```
+
+Windows:
+```
+setx BookStore__XmlFilePath "C:\data\books.xml"
+```
+
+**`By appsettings.{Environment}.json`** (e.g., `appsettings.Development.json`)
+
+**`appsettings.json`** (default fallback)
+
 
 You can override this value in production:
 
@@ -55,7 +81,7 @@ You can override this value in production:
   BookStore__XmlFilePath=/data/books.xml
   ```
 
-When running in Docker, `/data/books.xml` is mounted via a volume to your host `./data/books.xml`. Make sure this file exists or is created on first run.
+When running in Docker, `/data/books.xml` is mounted via a volume to your host `./data/books.xml`. This file exist with demo values.
 
 ## Running with Docker
 
@@ -67,21 +93,21 @@ This project includes a Docker Compose setup to run both services together.
 docker-compose up --build
 ```
 
-- Backend: [https://localhost:5001](https://localhost:5001)
+- Backend: [http://localhost:5206](http://localhost:5206) (Docker) / [https://localhost:5000](https://localhost:5000) (Local)
 - Frontend: [http://localhost:4200](http://localhost:4200)
 
 ### Example docker-compose.yml
 
 ```yaml
-version: "3.9"
 services:
-  api:
+  backend:
     build:
       context: ./BookStore_Backend
+      dockerfile: Dockerfile
     ports:
-      - "5001:80"
+      - "5206:5206"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - BookStore__XmlFilePath=/data/books.xml
     volumes:
       - ./data/books.xml:/data/books.xml
@@ -89,8 +115,10 @@ services:
   frontend:
     build:
       context: ./bookstore_frontend
+      dockerfile: Dockerfile
     ports:
       - "4200:80"
+
 ```
 
 ## API Endpoints
@@ -104,6 +132,7 @@ services:
 | DELETE | `/api/books/{isbn}`     | Delete a book                           |
 | GET    | `/api/books/categories` | Retrieve distinct categories            |
 | GET    | `/api/books/report`     | Download an HTML report                 |
+| GET    | `/api/books/stats`      | Get a stats for books                   |
 
 ## Development
 
@@ -118,7 +147,7 @@ services:
    dotnet run --project BookStore.API
    ```
 
-The backend will be available at `http://localhost:5001`.
+The backend will be available at `https://localhost:5000` or on `http://localhost:5206` on docker .
 
 ### Frontend
 
@@ -146,12 +175,6 @@ npm start
 ```
 
 Access at `http://localhost:4200`.
-
-**Production Build:**
-
-```bash
-npm run build:prod
-```
 
 ## Screenshots
 
