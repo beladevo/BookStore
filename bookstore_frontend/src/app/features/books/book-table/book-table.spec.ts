@@ -24,6 +24,13 @@ describe('BookTable', () => {
               .createSpy('getAll')
               .and.returnValue(of({ totalCount: 0, items: [] })),
             delete: jasmine.createSpy('delete').and.returnValue(of(undefined)),
+            getStats: jasmine.createSpy('getStats').and.returnValue(
+              of({
+                totalBooks: 0,
+                totalCategories: 0,
+                totalAuthors: 0,
+              })
+            ),
           },
         },
         {
@@ -59,10 +66,22 @@ describe('BookTable', () => {
   it('should load books', (done) => {
     const bookService = TestBed.inject(BookService);
     (bookService.getAll as jasmine.Spy).and.returnValue(
-      of({ totalCount: 1, items: [{ isbn: '1', title: 'T', authors: ['A'], category: 'C', year: 2020, price: 1 }] })
+      of({
+        totalCount: 1,
+        items: [
+          {
+            isbn: '1',
+            title: 'T',
+            authors: ['A'],
+            category: 'C',
+            year: 2020,
+            price: 1,
+          },
+        ],
+      })
     );
     component.ngOnInit();
-    component.books$.subscribe(books => {
+    component.books$.subscribe((books) => {
       expect(books.length).toBe(1);
       expect(books[0].title).toBe('T');
       done();

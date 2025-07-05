@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatsSummary } from './stats-summary';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 describe('StatsSummary', () => {
   let component: StatsSummary;
@@ -8,9 +9,9 @@ describe('StatsSummary', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StatsSummary]
-    })
-    .compileComponents();
+      imports: [StatsSummary],
+      providers: [provideAnimations()],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(StatsSummary);
     component = fixture.componentInstance;

@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { BookTable } from './features/books/book-table/book-table';
 import { BookForm } from './features/books/book-form/book-form';
+import { Dashboard } from './features/dashboard/dashboard';
 
 export const routes: Routes = [
-  { path: '', component: BookTable },
+  { path: '', component: Dashboard },
   { path: 'books/:isbn/edit', component: BookForm },
   { path: 'books/new', component: BookForm },
 ];

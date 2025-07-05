@@ -41,12 +41,7 @@ import { CategorySelect } from '../../../shared/components/category-select/categ
 import { Book } from '../../../core/models/book.model';
 import { APP_CONFIG } from '../../../core/constants/app-config';
 import { NotificationService } from '../../../core/services/notification.service';
-import {
-  CdkVirtualScrollViewport,
-  ScrollingModule,
-} from '@angular/cdk/scrolling';
-import { StatsSummary } from '../../stats-summary/stats-summary';
-import { BookStats } from '../../../core/models/book-stats.model';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-book-table',
@@ -65,7 +60,6 @@ import { BookStats } from '../../../core/models/book-stats.model';
     MatDialogModule,
     CategorySelect,
     ScrollingModule,
-    StatsSummary,
   ],
   templateUrl: './book-table.html',
   styleUrls: ['./book-table.scss'],
@@ -91,10 +85,7 @@ export class BookTable implements OnInit {
   totalCount = 0;
   books$: Observable<Book[]> = new Observable<Book[]>();
 
-  stats$!: Observable<BookStats>;
   highlightedIsbn: string | null = null;
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private bookService: BookService,
@@ -138,21 +129,8 @@ export class BookTable implements OnInit {
       shareReplay(1)
     );
 
-    this.stats$ = this.bookService.getStats().pipe(
-      catchError((error: any) => {
-        console.error('Error loading stats:', error);
-        this.notify.error('Failed to load stats.');
-        return of({
-          totalBooks: 0,
-          totalCategories: 0,
-          totalAuthors: 0,
-        });
-      }),
-      shareReplay(1)
-    );
-
     const state = window.history.state;
-    console.log("🚀 ~ BookTable ~ ngOnInit ~ state:", state)
+    console.log('🚀 ~ BookTable ~ ngOnInit ~ state:', state);
     if (state?.['newIsbn']) {
       this.highlightedIsbn = state['newIsbn'];
 
