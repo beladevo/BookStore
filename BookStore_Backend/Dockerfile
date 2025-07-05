@@ -17,6 +17,6 @@ RUN dotnet publish -c Release -o /app
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app ./
-EXPOSE 5000
-ENV ASPNETCORE_URLS=http://+:5000
+EXPOSE 5206
+ENV ASPNETCORE_URLS=http://+:5206
 ENTRYPOINT ["dotnet", "BookStore.API.dll"]
