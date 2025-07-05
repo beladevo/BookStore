@@ -17,7 +17,6 @@
   - [Frontend](#frontend)
 
 - [Screenshots](#screenshots)
-- [License](#license)
 - [Credits](#credits)
 
 ## Overview
