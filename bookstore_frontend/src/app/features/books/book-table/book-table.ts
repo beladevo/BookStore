@@ -19,7 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { BookService } from '../../../core/services/book.service';
 import { openConfirmDeleteDialog } from '../../../shared/components/confirm-dialog/confirm-dialog.util';
 import { StorageService } from '../../../core/services/storage.service';
@@ -92,6 +92,8 @@ export class BookTable implements OnInit {
   books$: Observable<Book[]> = new Observable<Book[]>();
 
   stats$!: Observable<BookStats>;
+  highlightedIsbn: string | null = null;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
@@ -99,7 +101,8 @@ export class BookTable implements OnInit {
     private dialog: MatDialog,
     private storage: StorageService,
     private download: DownloadService,
-    private notify: NotificationService
+    private notify: NotificationService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -134,7 +137,7 @@ export class BookTable implements OnInit {
       }),
       shareReplay(1)
     );
-    console.log('Books observable initialized');
+
     this.stats$ = this.bookService.getStats().pipe(
       catchError((error: any) => {
         console.error('Error loading stats:', error);
@@ -147,6 +150,16 @@ export class BookTable implements OnInit {
       }),
       shareReplay(1)
     );
+
+    const state = window.history.state;
+    console.log("🚀 ~ BookTable ~ ngOnInit ~ state:", state)
+    if (state?.['newIsbn']) {
+      this.highlightedIsbn = state['newIsbn'];
+
+      setTimeout(() => {
+        this.highlightedIsbn = null;
+      }, 3000);
+    }
   }
 
   onPageChange(event: PageEvent) {

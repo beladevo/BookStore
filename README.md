@@ -6,35 +6,37 @@
 
 ## Table of Contents
 
-* [Overview](#overview)
-* [Features](#features)
-* [Configuration](#configuration)
-* [Running with Docker](#running-with-docker)
-* [API Endpoints](#api-endpoints)
-* [Development](#development)
+- [Overview](#overview)
+- [Features](#features)
+- [Configuration](#configuration)
+- [Running with Docker](#running-with-docker)
+- [API Endpoints](#api-endpoints)
+- [Development](#development)
 
-  * [Backend](#backend)
-  * [Frontend](#frontend)
-* [Known Issues](#known-issues)
-* [Future Work](#future-work)
-* [Screenshots](#screenshots)
-* [License](#license)
-* [Credits](#credits)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+
+- [Known Issues](#known-issues)
+- [Future Work](#future-work)
+- [Screenshots](#screenshots)
+- [License](#license)
+- [Credits](#credits)
 
 ## Overview
+
 I've been asked to build this project to manage books and treat the XML file as if it were a database, providing full persistence and CRUD functionality.
 
 BookStore is a clean-architecture .NET solution with an Angular frontend. It provides a full system for managing books stored in XML format, offering filtering, reporting, and Docker support.
 
 ## Features
 
-* Full CRUD operations (Create, Read, Update, Delete) on books
-* Pagination, keyword search, and category filtering
-* Distinct category listing ordered by popularity
-* HTML report generation with UTC timestamp
-* Configurable XML file path per environment (development, production, testing)
-* Clean Architecture and SOLID principles
-* Docker Compose support for running backend and frontend together
+- Full CRUD operations (Create, Read, Update, Delete) on books
+- Pagination, keyword search, and category filtering
+- Distinct category listing ordered by popularity
+- HTML report generation with UTC timestamp
+- Configurable XML file path per environment (development, production, testing)
+- Clean Architecture and SOLID principles
+- Docker Compose support for running backend and frontend together
 
 ## Configuration
 
@@ -48,8 +50,8 @@ The XML data file path is defined in `appsettings.json`:
 
 You can override this value in production:
 
-* Via `appsettings.Production.json`
-* Or with an environment variable:
+- Via `appsettings.Production.json`
+- Or with an environment variable:
 
   ```bash
   BookStore__XmlFilePath=/data/books.xml
@@ -67,8 +69,8 @@ This project includes a Docker Compose setup to run both services together.
 docker-compose up --build
 ```
 
-* Backend: [https://localhost:5001](https://localhost:5001)
-* Frontend: [http://localhost:4200](http://localhost:4200)
+- Backend: [https://localhost:5001](https://localhost:5001)
+- Frontend: [http://localhost:4200](http://localhost:4200)
 
 ### Example docker-compose.yml
 
@@ -126,16 +128,16 @@ Built with Angular v20, Standalone Components, and Angular Material.
 
 **Features:**
 
-* Paginated book listing with search and filters
-* Add, edit, and delete books
-* Download HTML report
-* Save user preferences in local storage
+- Paginated book listing with search and filters
+- Add, edit, and delete books
+- Download HTML report
+- Save user preferences in local storage
 
 **Technologies:**
 
-* Angular Standalone Components
-* Angular Material
-* RxJS
+- Angular Standalone Components
+- Angular Material
+- RxJS
 
 **Running Frontend:**
 
@@ -155,10 +157,29 @@ npm run build:prod
 
 ## Screenshots
 
-![Book List](docs/screenshot-list.png)
+### 📘 Add New Book
 
-![Book Details](docs/screenshot-details.png)
+![Add New Book](docs/screenshot-add-new-book.png)
 
+### 📗 Book Table with Stats
+
+![Book Table Stats](docs/screenshot-book-table-stats.png)
+
+### 🌙 Dark Mode
+
+![Dark Mode](docs/screenshot-dark-mode.png)
+
+### ✏️ Edit Book
+
+![Edit Book](docs/screenshot-edit-book.png)
+
+### ✅ New Book Created Highlight
+
+![New Book Created](docs/screenshot-new-book-created.png)
+
+### 🔍 Perform Search
+
+![Perform Search](docs/screenshot-perfurm-search.png)
 
 ## Credits
 

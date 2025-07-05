@@ -13,7 +13,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { BookService } from '../../../core/services/book.service';
-import { ConfirmDialog } from '../../../shared/components/confirm-dialog/confirm-dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { CategoryService } from '../../../core/services/category.service';
@@ -144,7 +143,8 @@ export class BookForm implements OnInit {
 
       this.bookService.create(newBook).subscribe({
         next: () => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/'], { state: { newIsbn: newBook.isbn } });
+          console.log("🚀 ~ BookForm ~ this.bookService.create ~ newIsbn: newBook.isbn:", newBook.isbn)
           this.notify.success(`Book "${newBook.title}" created successfully.`);
         },
         error: (error) => {

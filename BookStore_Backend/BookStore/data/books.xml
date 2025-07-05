@@ -211,4 +211,12 @@
     <year>2016</year>
     <price>11</price>
   </book>
+  <book category="Technology">
+    <isbn>978-0131103627</isbn>
+    <title>The C Programming Language (2nd Edition)</title>
+    <author>Brian W. Kernighan</author>
+    <author>Dennis M. Ritchie</author>
+    <year>1988</year>
+    <price>67</price>
+  </book>
 </books>

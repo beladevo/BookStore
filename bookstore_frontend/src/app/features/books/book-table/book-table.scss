@@ -6,6 +6,14 @@
   gap: 0.5rem;
   margin-bottom: 1.5rem;
 
+  .header-title {
+    font-family: "Open Sans", "Roboto", sans-serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: var(--mat-sys-on-surface);
+    margin: 0;
+  }
+
   h2 {
     display: flex;
     align-items: center;
@@ -48,6 +56,19 @@
     overflow: hidden;
     width: 100%;
     min-width: 600px;
+
+    tr.highlight {
+      animation: highlight-fade 3s ease-out;
+    }
+
+    @keyframes highlight-fade {
+      0% {
+        background-color: #c8e6c9;
+      }
+      100% {
+        background-color: transparent;
+      }
+    }
   }
 
   .no-results {

@@ -34,7 +34,7 @@
   <div class="actions">
     <div class="left">
       <button
-        mat-raised-button
+        matButton="filled"
         color="primary"
         type="submit"
         [disabled]="form.invalid"
@@ -46,7 +46,7 @@
       </button>
     </div>
     <div class="right" *ngIf="isEdit">
-      <button mat-stroked-button color="warn" type="button" (click)="delete()">
+      <button mat-stroked-button class="error" type="button" (click)="delete()">
         <mat-icon>delete</mat-icon>
         Delete
       </button>

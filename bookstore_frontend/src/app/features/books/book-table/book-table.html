@@ -6,16 +6,16 @@
 ></app-stats-summary>
 
 <div class="header">
-  <h2>
+  <h2 class="header-title">
     <mat-icon>menu_book</mat-icon>
     Books
   </h2>
   <div class="header-actions">
-    <button mat-raised-button color="primary" routerLink="/books/new">
+    <button matButton="filled" routerLink="/books/new">
       <mat-icon>add</mat-icon>
       Add New Book
     </button>
-    <button mat-raised-button color="accent" (click)="exportReport()">
+    <button matButton="tonal" (click)="exportReport()">
       <mat-icon>download</mat-icon>
       Export Report
     </button>
@@ -87,14 +87,18 @@
             >
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="confirmDelete(book)">
+            <button mat-icon-button (click)="confirmDelete(book)">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          [class.highlight]="row.isbn === highlightedIsbn"
+        ></tr>
       </table>
     </cdk-virtual-scroll-viewport>
     <div class="no-results" *ngIf="(books$ | async)?.length === 0">

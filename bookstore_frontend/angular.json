@@ -27,10 +27,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss",
-              "src/theme.scss"
-            ]
+            "styles": ["src/styles.scss", "src/theme.scss"]
           },
           "configurations": {
             "production": {
@@ -89,10 +86,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss",
-              "src/theme.scss"
-            ]
+            "styles": ["src/styles.scss", "src/theme.scss"]
           }
         }
       }

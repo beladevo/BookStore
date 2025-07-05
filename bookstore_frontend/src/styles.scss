@@ -9,7 +9,7 @@ body {
   padding: 0;
   font-family: var(--app-font, "Open Sans", "Heebo", Arial, sans-serif);
   background-color: var(--app-bg);
-  color: var(--app-on-bg);
+  color: var(--mat-sys-on-surface);
   transition: background 0.2s, color 0.2s;
 }
 

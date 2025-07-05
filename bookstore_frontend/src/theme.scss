@@ -1,5 +1,18 @@
-@use './_theme-colors' as theme-colors;
-@use '@angular/material' as mat;
+@use "./_theme-colors" as theme-colors;
+@use "@angular/material" as mat;
+
+$theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$magenta-palette,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
 
 $bookstore-colors: (
   primary: theme-colors.$primary-palette,
@@ -14,8 +27,8 @@ $bookstore-colors: (
 );
 
 $bookstore-typography: (
-  plain-family: 'Open Sans, Arial, sans-serif',
-  brand-family: 'Roboto',
+  plain-family: "Open Sans, Arial, sans-serif",
+  brand-family: "Roboto",
   bold-weight: 900,
   medium-weight: 500,
   regular-weight: 300,
@@ -24,27 +37,50 @@ $bookstore-typography: (
 
 html {
   color-scheme: light dark;
-  @include mat.theme((
-    color: $bookstore-colors,
-    typography: $bookstore-typography,
-    density: 0,
-  ));
+  @include mat.theme(
+    (
+      color: $bookstore-colors,
+      typography: $bookstore-typography,
+      density: 0,
+    )
+  );
 }
 
 body {
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
-  font-family: var(--mat-typescale-plain-family, 'Open Sans, Roboto, Arial, sans-serif');
+  font-family: var(
+    --mat-typescale-plain-family,
+    "Open Sans, Roboto, Arial, sans-serif"
+  );
   transition: background 0.2s, color 0.2s;
   margin: 0;
   padding: 0;
   height: 100%;
+
+  .primary {
+    @include mat.button-color($theme: $theme, $color-variant: "primary");
+  }
+
+  .secondary {
+    @include mat.button-theme($theme: $theme, $color-variant: "secondary");
+  }
+
+  .tertiary {
+    @include mat.button-theme($theme: $theme, $color-variant: "tertiary");
+  }
+
+  .error {
+    @include mat.button-theme($theme: $theme, $color-variant: "error");
+  }
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   color-scheme: dark;
 }
 
-[data-theme='light'] {
+[data-theme="light"] {
   color-scheme: light;
 }
+
+@include mat.typography-hierarchy($theme);
