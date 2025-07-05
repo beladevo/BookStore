@@ -46,7 +46,7 @@ public class BooksController : ControllerBase
             var book = _bookService.GetByIsbn(isbn);
             return Ok(MapToResponse(book));
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return NotFound(new { message = "Not found" });
         }
@@ -60,7 +60,7 @@ public class BooksController : ControllerBase
             var stats = _bookService.GetStats();
             return Ok(stats);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return StatusCode(500, new
             {
@@ -83,11 +83,11 @@ public class BooksController : ControllerBase
             _bookService.Add(book);
             return CreatedAtAction(nameof(GetByIsbn), new { isbn = book.Isbn }, MapToResponse(book));
         }
-        catch (InvalidOperationException ex)
+        catch (InvalidOperationException)
         {
             return Conflict(new { message = "ISBN already exist"});
         }
-        catch(Exception ex)
+        catch(Exception)
         {
             return BadRequest();
         }
@@ -106,7 +106,7 @@ public class BooksController : ControllerBase
             _bookService.Update(isbn, book);
             return NoContent();
         }
-        catch (KeyNotFoundException ex)
+        catch (KeyNotFoundException)
         {
             return NotFound();
         }
@@ -120,7 +120,7 @@ public class BooksController : ControllerBase
             _bookService.Delete(isbn);
             return NoContent();
         }
-        catch (KeyNotFoundException ex)
+        catch (KeyNotFoundException)
         {
             return NotFound();
         }
