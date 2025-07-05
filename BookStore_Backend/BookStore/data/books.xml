@@ -204,4 +204,11 @@
     <year>2015</year>
     <price>2999</price>
   </book>
+  <book category="Fantasy">
+    <isbn>12312322</isbn>
+    <title>asdasd</title>
+    <author>Omri Beladev</author>
+    <year>2016</year>
+    <price>11</price>
+  </book>
 </books>

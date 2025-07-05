@@ -9,11 +9,11 @@ namespace BookStore.API.Controllers;
 [Route("api/[controller]")]
 public class BooksController : ControllerBase
 {
-    private readonly IBookService _service;
+    private readonly IBookService _bookService;
 
     public BooksController(IBookService service)
     {
-        _service = service;
+        _bookService = service;
     }
 
     [HttpGet]
@@ -27,7 +27,7 @@ public class BooksController : ControllerBase
         if (pageSize < 1 || pageSize > 20)
             return BadRequest(new { message = $"Page size must be between 1 and 20. Provided: {pageSize}" });
 
-        var (totalCount, items) = _service.GetPaged(pageNumber, pageSize, search, category);
+        var (totalCount, items) = _bookService.GetPaged(pageNumber, pageSize, search, category);
         return Ok(new
         {
             totalCount,
@@ -43,7 +43,7 @@ public class BooksController : ControllerBase
             if (string.IsNullOrWhiteSpace(isbn))
                 return BadRequest(new { message = "ISBN is required." });
 
-            var book = _service.GetByIsbn(isbn);
+            var book = _bookService.GetByIsbn(isbn);
             return Ok(MapToResponse(book));
         }
         catch (KeyNotFoundException ex)
@@ -51,6 +51,25 @@ public class BooksController : ControllerBase
             return NotFound(new { message = ex.Message });
         }
     }
+
+    [HttpGet("stats")]
+    public ActionResult<BookStatsDto> GetStats()
+    {
+        try
+        {
+            var stats = _bookService.GetStats();
+            return Ok(stats);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new
+            {
+                message = "An unexpected error occurred while retrieving book statistics.",
+                detail = ex.Message
+            });
+        }
+    }
+
 
     [HttpPost]
     public IActionResult Add([FromBody] BookRequest request)
@@ -62,7 +81,7 @@ public class BooksController : ControllerBase
 
         try
         {
-            _service.Add(book);
+            _bookService.Add(book);
             return CreatedAtAction(nameof(GetByIsbn), new { isbn = book.Isbn }, MapToResponse(book));
         }
         catch (InvalidOperationException ex)
@@ -81,7 +100,7 @@ public class BooksController : ControllerBase
 
         try
         {
-            _service.Update(isbn, book);
+            _bookService.Update(isbn, book);
             return NoContent();
         }
         catch (KeyNotFoundException ex)
@@ -95,7 +114,7 @@ public class BooksController : ControllerBase
     {
         try
         {
-            _service.Delete(isbn);
+            _bookService.Delete(isbn);
             return NoContent();
         }
         catch (KeyNotFoundException ex)
@@ -107,14 +126,14 @@ public class BooksController : ControllerBase
     [HttpGet("categories")]
     public ActionResult<List<string>> GetCategories()
     {
-        var categories = _service.GetDistinctCategories();
+        var categories = _bookService.GetDistinctCategories();
         return Ok(categories);
     }
 
     [HttpGet("report")]
     public IActionResult GetReport()
     {
-        var books = _service.GetAll();
+        var books = _bookService.GetAll();
         var html = GenerateHtml(books);
         return Content(html, "text/html");
     }

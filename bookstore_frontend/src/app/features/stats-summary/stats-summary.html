@@ -1,0 +1,12 @@
+<div class="stats-summary-container" [@staggerFade]>
+  <h2 class="stats-title">Quick Stats</h2>
+  <div class="stats-summary">
+    <mat-card *ngFor="let stat of stats">
+      <mat-icon class="stat-icon">{{ stat.icon }}</mat-icon>
+      <div class="stat-info">
+        <div class="stat-value">{{ stat.value }}</div>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+    </mat-card>
+  </div>
+</div>

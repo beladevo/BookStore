@@ -6,6 +6,7 @@ import { PagedResponse } from '../models/api/api-response.model';
 import { Book } from '../models/book.model';
 import { buildParams } from '../../shared/utils/http-params.util';
 import { APP_CONFIG } from '../constants/app-config';
+import { BookStats } from '../models/book-stats.model';
 
 @Injectable({ providedIn: 'root' })
 export class BookService {
@@ -30,10 +31,11 @@ export class BookService {
     );
   }
 
-  private handleError(error: any): Observable<never> {
-    // later we can use monitoring service here like datadog, analytics, etc.
-    console.error('An error occurred:', error);
-    throw error;
+  getStats(): Observable<BookStats> {
+    return this.api.get<BookStats>(API_ROUTES.STATS).pipe(
+      retry(3),
+      catchError(this.handleError)
+    );
   }
 
   getByIsbn(isbn: string): Observable<Book> {
@@ -46,6 +48,11 @@ export class BookService {
 
   update(isbn: string, book: Book): Observable<Book> {
     return this.api.put<Book>(API_ROUTES.BOOK_BY_ISBN(isbn), book);
+  }
+  private handleError(error: any): Observable<never> {
+    // later we can use monitoring service here like datadog, analytics, etc.
+    console.error('An error occurred:', error);
+    throw error;
   }
 
   delete(isbn: string): Observable<void> {

@@ -76,19 +76,46 @@ namespace BookStore.Application.Services
 
         public List<string> GetDistinctCategories()
         {
-            var categories = _cache.GetOrCreate("categories", entry =>
+            return _cache.GetOrCreate("categories", entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
-                var books = _repository.GetAll() ?? new List<Book>();
+
+                var books = _repository.GetAll();
                 return books
                     .Where(b => !string.IsNullOrWhiteSpace(b.Category))
                     .GroupBy(b => b.Category, StringComparer.OrdinalIgnoreCase)
                     .OrderByDescending(g => g.Count())
                     .Select(g => g.Key)
                     .ToList();
+            }) ?? new List<string>();
+        }
+
+        public BookStatsDto GetStats()
+        {
+            var stats = _cache.GetOrCreate("book_stats", entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+
+                var books = _repository.GetAll();
+                return new BookStatsDto
+                {
+                    TotalBooks = books.Count,
+                    TotalCategories = books
+                        .Select(b => b.Category)
+                        .Where(c => !string.IsNullOrWhiteSpace(c))
+                        .Distinct(StringComparer.OrdinalIgnoreCase)
+                        .Count(),
+                    TotalAuthors = books
+                        .SelectMany(b => b.Authors ?? Enumerable.Empty<string>())
+                        .Distinct(StringComparer.OrdinalIgnoreCase)
+                        .Count()
+                };
             });
 
-            return categories ?? new List<string>();
+            if (stats == null)
+                throw new InvalidOperationException("Failed to create BookStatsDto.");
+
+            return stats;
         }
 
         public void Add(Book book)
@@ -135,7 +162,11 @@ namespace BookStore.Application.Services
                 throw new BusinessLogicException(errorMsg);
             }
         }
-
+        private void InvalidateCaches()
+        {
+            _cache.Remove("categories");
+            _cache.Remove("book_stats");
+        }
         private string EscapeText(string text)
         {
             return System.Security.SecurityElement.Escape(text);

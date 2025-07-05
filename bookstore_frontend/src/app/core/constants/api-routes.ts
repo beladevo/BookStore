@@ -3,4 +3,5 @@ export const API_ROUTES = {
   BOOK_BY_ISBN: (isbn: string) => `books/${isbn}`,
   BOOKS_REPORT: 'books/report',
   CATEGORIES: 'books/categories',
+  STATS: 'books/stats',
 };

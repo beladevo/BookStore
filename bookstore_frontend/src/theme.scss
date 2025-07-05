@@ -1,11 +1,15 @@
+@use './_theme-colors' as theme-colors;
 @use '@angular/material' as mat;
 
 $bookstore-colors: (
-  primary: mat.$m2-indigo-palette,
-  secondary: mat.$red-palette,
-  tertiary: mat.$orange-palette,
+  primary: theme-colors.$primary-palette,
+  // You can use the same palette for secondary if you like,
+  // or define different ones:
+  secondary: theme-colors.$primary-palette,
+  tertiary: theme-colors.$tertiary-palette,
+  // You can keep or replace others:
   warn: mat.$red-palette,
-  neutral: mat.$m2-orange-palette,
+  neutral: mat.$m2-grey-palette,
   theme-type: color-scheme,
 );
 

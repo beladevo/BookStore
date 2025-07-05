@@ -1,3 +1,10 @@
+<app-stats-summary
+  *ngIf="stats$ | async as stats"
+  [totalBooks]="stats.totalBooks"
+  [totalAuthors]="stats.totalAuthors"
+  [totalCategories]="stats.totalCategories"
+></app-stats-summary>
+
 <div class="header">
   <h2>
     <mat-icon>menu_book</mat-icon>
@@ -34,7 +41,11 @@
 
 <ng-container *ngIf="books$ | async as books">
   <div class="table-container">
-    <cdk-virtual-scroll-viewport itemSize="56" class="virtual-scroll-viewport" [style.height.px]="500">
+    <cdk-virtual-scroll-viewport
+      itemSize="56"
+      class="virtual-scroll-viewport"
+      [style.height.px]="500"
+    >
       <table mat-table [dataSource]="books" class="mat-elevation-z2">
         <ng-container matColumnDef="isbn">
           <th mat-header-cell *matHeaderCellDef>ISBN</th>

@@ -7,6 +7,7 @@ namespace BookStore.Core.Interfaces
         List<Book> GetAll();
         (int totalCount, List<Book> items) GetPaged(int pageNumber, int pageSize, string? search, string? category);
         Book GetByIsbn(string isbn);
+        public BookStatsDto GetStats();
         List<string> GetDistinctCategories();
         void Add(Book book);
         void Update(string isbn, Book book);

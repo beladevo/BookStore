@@ -13,6 +13,7 @@ import {
 } from '@angular/common/http';
 import { ApiInterceptor } from './core/interceptors/api.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptorsFromDi()),
+    provideAnimations(),
 
     {
       provide: HTTP_INTERCEPTORS,

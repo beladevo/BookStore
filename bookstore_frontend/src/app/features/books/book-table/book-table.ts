@@ -1,4 +1,10 @@
-import { Component, ViewChild, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  AfterViewInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import {
@@ -35,7 +41,12 @@ import { CategorySelect } from '../../../shared/components/category-select/categ
 import { Book } from '../../../core/models/book.model';
 import { APP_CONFIG } from '../../../core/constants/app-config';
 import { NotificationService } from '../../../core/services/notification.service';
-import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  ScrollingModule,
+} from '@angular/cdk/scrolling';
+import { StatsSummary } from '../../stats-summary/stats-summary';
+import { BookStats } from '../../../core/models/book-stats.model';
 
 @Component({
   selector: 'app-book-table',
@@ -54,6 +65,7 @@ import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrollin
     MatDialogModule,
     CategorySelect,
     ScrollingModule,
+    StatsSummary,
   ],
   templateUrl: './book-table.html',
   styleUrls: ['./book-table.scss'],
@@ -69,7 +81,6 @@ export class BookTable implements OnInit {
     'actions',
   ];
 
-
   search$ = new BehaviorSubject<string>('');
   category$ = new BehaviorSubject<string>('All');
 
@@ -80,6 +91,7 @@ export class BookTable implements OnInit {
   totalCount = 0;
   books$: Observable<Book[]> = new Observable<Book[]>();
 
+  stats$!: Observable<BookStats>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
@@ -87,12 +99,10 @@ export class BookTable implements OnInit {
     private dialog: MatDialog,
     private storage: StorageService,
     private download: DownloadService,
-    private notify: NotificationService,
+    private notify: NotificationService
   ) {}
 
   ngOnInit() {
-    console.log('on init');
-    
     this.initialPageSize =
       this.storage.get<number>(CACHE_KEYS.BOOKS_PAGE_SIZE) ??
       APP_CONFIG.DEFAULT_PAGE_SIZE;
@@ -107,9 +117,7 @@ export class BookTable implements OnInit {
       this.search$.pipe(debounceTime(300)),
       this.category$,
     ]).pipe(
-      switchMap(([page, search, category]) =>
-      {
-        console.log('on switch map');
+      switchMap(([page, search, category]) => {
         return this.bookService
           .getAll(page.pageIndex + 1, page.pageSize, search, category)
           .pipe(
@@ -117,15 +125,27 @@ export class BookTable implements OnInit {
             map((response) => response.items),
             catchError((error: any) => {
               console.error('Error loading books:', error);
-              this.notify.error('Failed to load books. Please try again later.');
+              this.notify.error(
+                'Failed to load books. Please try again later.'
+              );
               return of([]);
             })
-          )
-          
-        }
-      ),
+          );
+      }),
       shareReplay(1)
-
+    );
+    console.log('Books observable initialized');
+    this.stats$ = this.bookService.getStats().pipe(
+      catchError((error: any) => {
+        console.error('Error loading stats:', error);
+        this.notify.error('Failed to load stats.');
+        return of({
+          totalBooks: 0,
+          totalCategories: 0,
+          totalAuthors: 0,
+        });
+      }),
+      shareReplay(1)
     );
   }
 
