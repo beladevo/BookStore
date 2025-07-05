@@ -46,9 +46,9 @@ public class BooksController : ControllerBase
             var book = _bookService.GetByIsbn(isbn);
             return Ok(MapToResponse(book));
         }
-        catch (KeyNotFoundException ex)
+        catch (Exception ex)
         {
-            return NotFound(new { message = ex.Message });
+            return NotFound(new { message = "Not found" });
         }
     }
 
@@ -65,7 +65,6 @@ public class BooksController : ControllerBase
             return StatusCode(500, new
             {
                 message = "An unexpected error occurred while retrieving book statistics.",
-                detail = ex.Message
             });
         }
     }
@@ -86,7 +85,7 @@ public class BooksController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
-            return Conflict(new { message = ex.Message });
+            return Conflict();
         }
     }
 
@@ -105,7 +104,7 @@ public class BooksController : ControllerBase
         }
         catch (KeyNotFoundException ex)
         {
-            return NotFound(new { message = ex.Message });
+            return NotFound();
         }
     }
 
@@ -119,7 +118,7 @@ public class BooksController : ControllerBase
         }
         catch (KeyNotFoundException ex)
         {
-            return NotFound(new { message = ex.Message });
+            return NotFound();
         }
     }
 
