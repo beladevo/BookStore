@@ -138,10 +138,15 @@ namespace BookStore.Application.Services
 
             var existing = GetCachedBooks().FirstOrDefault(b => b.Isbn.Equals(isbn, StringComparison.OrdinalIgnoreCase));
             if (existing == null)
+            {
+                _logger.LogError("Failed to updated book with ISBN: {Isbn}", book.Isbn);
                 throw new KeyNotFoundException($"Book with ISBN '{isbn}' not found.");
+            }
 
             _repository.Update(isbn, book);
             InvalidateCaches();
+            _logger.LogInformation("Successfully updated book with ISBN: {Isbn}", book.Isbn);
+
         }
 
         public void Delete(string isbn)
