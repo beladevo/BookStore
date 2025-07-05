@@ -16,8 +16,6 @@
   - [Backend](#backend)
   - [Frontend](#frontend)
 
-- [Known Issues](#known-issues)
-- [Future Work](#future-work)
 - [Screenshots](#screenshots)
 - [License](#license)
 - [Credits](#credits)
