@@ -3,6 +3,7 @@ using BookStore.Core.Interfaces;
 using BookStore.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureKestrel(o => o.ListenAnyIP(5000));
 
 var xmlPath = builder.Configuration["BookStore:XmlFilePath"]
     ?? throw new InvalidOperationException("XmlFilePath is missing in configuration");
@@ -48,7 +49,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

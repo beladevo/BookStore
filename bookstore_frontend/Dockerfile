@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build:prod
+RUN npm run build:dev
 
 FROM nginx:alpine
 COPY --from=build /app/dist/bookstore_frontend/browser /usr/share/nginx/html
