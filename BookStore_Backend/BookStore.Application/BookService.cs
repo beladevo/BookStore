@@ -30,13 +30,13 @@ namespace BookStore.Application.Services
 
         public List<Book> GetAll()
         {
-            return _repository.GetAll();
+            return GetCachedBooks();
         }
 
         public (int totalCount, List<Book> items) GetPaged(
-            int pageNumber, int pageSize, string? search, string? category)
+        int pageNumber, int pageSize, string? search, string? category)
         {
-            var books = _repository.GetAll();
+            var books = GetCachedBooks();
 
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -68,7 +68,8 @@ namespace BookStore.Application.Services
 
         public Book GetByIsbn(string isbn)
         {
-            var book = _repository.GetByIsbn(isbn);
+            var book = GetCachedBooks()
+                .FirstOrDefault(b => b.Isbn.Equals(isbn, StringComparison.OrdinalIgnoreCase));
             if (book == null)
                 throw new KeyNotFoundException($"Book with ISBN '{isbn}' not found.");
             return book;
@@ -79,8 +80,7 @@ namespace BookStore.Application.Services
             return _cache.GetOrCreate("categories", entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
-
-                var books = _repository.GetAll();
+                var books = GetCachedBooks();
                 return books
                     .Where(b => !string.IsNullOrWhiteSpace(b.Category))
                     .GroupBy(b => b.Category, StringComparer.OrdinalIgnoreCase)
@@ -95,8 +95,7 @@ namespace BookStore.Application.Services
             var stats = _cache.GetOrCreate("book_stats", entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
-
-                var books = _repository.GetAll();
+                var books = GetCachedBooks();
                 return new BookStatsDto
                 {
                     TotalBooks = books.Count,
@@ -122,13 +121,14 @@ namespace BookStore.Application.Services
         {
             _logger.LogInformation("Adding book with ISBN: {Isbn}", book.Isbn);
             ValidateBook(book);
-            var existing = _repository.GetByIsbn(book.Isbn);
+            var existing = GetCachedBooks().FirstOrDefault(b => b.Isbn.Equals(book.Isbn, StringComparison.OrdinalIgnoreCase));
             if (existing != null)
             {
                 _logger.LogWarning("Attempted to add duplicate book with ISBN: {Isbn}", book.Isbn);
                 throw new InvalidOperationException($"Book with ISBN '{book.Isbn}' already exists.");
             }
             _repository.Add(book);
+            InvalidateCaches();
             _logger.LogInformation("Successfully added book with ISBN: {Isbn}", book.Isbn);
         }
 
@@ -136,21 +136,24 @@ namespace BookStore.Application.Services
         {
             ValidateBook(book);
 
-            var existing = _repository.GetByIsbn(isbn);
+            var existing = GetCachedBooks().FirstOrDefault(b => b.Isbn.Equals(isbn, StringComparison.OrdinalIgnoreCase));
             if (existing == null)
                 throw new KeyNotFoundException($"Book with ISBN '{isbn}' not found.");
 
             _repository.Update(isbn, book);
+            InvalidateCaches();
         }
 
         public void Delete(string isbn)
         {
-            var existing = _repository.GetByIsbn(isbn);
+            var existing = GetCachedBooks().FirstOrDefault(b => b.Isbn.Equals(isbn, StringComparison.OrdinalIgnoreCase));
             if (existing == null)
                 throw new KeyNotFoundException($"Book with ISBN '{isbn}' not found.");
 
             _repository.Delete(isbn);
+            InvalidateCaches();
         }
+
         #region Private Methods
         private void ValidateBook(Book book)
         {
@@ -162,15 +165,22 @@ namespace BookStore.Application.Services
                 throw new BusinessLogicException(errorMsg);
             }
         }
+
+        private List<Book> GetCachedBooks()
+        {
+            return _cache.GetOrCreate("books_all", entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
+                return _repository.GetAll();
+            }) ?? new List<Book>();
+        }
+
         private void InvalidateCaches()
         {
+            _cache.Remove("books_all");
             _cache.Remove("categories");
             _cache.Remove("book_stats");
         }
-        private string EscapeText(string text)
-        {
-            return System.Security.SecurityElement.Escape(text);
-        }
+        #endregion
     }
-    #endregion
 }

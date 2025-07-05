@@ -85,7 +85,11 @@ public class BooksController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
-            return Conflict();
+            return Conflict(new { message = "ISBN already exist"});
+        }
+        catch(Exception ex)
+        {
+            return BadRequest();
         }
     }
 

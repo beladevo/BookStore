@@ -13,10 +13,6 @@ namespace BookStore.Data.Repositories
         private readonly object _lockObj = new object();
         private readonly ILogger<XmlBookRepository>? _logger;
 
-        private List<Book>? _cache;
-        private DateTime _cacheTimestamp;
-        private readonly TimeSpan _cacheDuration = TimeSpan.FromSeconds(10);
-
         public XmlBookRepository(string filePath, ILogger<XmlBookRepository>? logger = null)
         {
             _filePath = filePath;
@@ -28,10 +24,6 @@ namespace BookStore.Data.Repositories
         {
             lock (_lockObj)
             {
-                if (_cache != null && (DateTime.UtcNow - _cacheTimestamp) < _cacheDuration)
-                {
-                    return _cache;
-                }
                 try
                 {
                     EnsureXmlFileExists();
@@ -48,8 +40,6 @@ namespace BookStore.Data.Repositories
                             Price = decimal.TryParse(x.Element("price")?.Value, out var price) ? price : 0
                         })
                         .ToList();
-                    _cache = books;
-                    _cacheTimestamp = DateTime.UtcNow;
                     return books;
                 }
                 catch (XmlException ex)
@@ -104,7 +94,6 @@ namespace BookStore.Data.Repositories
                     );
                     doc.Root!.Add(newBook);
                     doc.Save(_filePath);
-                    InvalidateCache();
                 }
                 catch (XmlException ex)
                 {
@@ -140,7 +129,6 @@ namespace BookStore.Data.Repositories
                     bookElement.Element("year")!.Value = book.Year.ToString();
                     bookElement.Element("price")!.Value = book.Price.ToString();
                     doc.Save(_filePath);
-                    InvalidateCache();
                 }
                 catch (XmlException ex)
                 {
@@ -167,7 +155,6 @@ namespace BookStore.Data.Repositories
                         throw new InvalidOperationException($"Book with ISBN '{isbn}' not found.");
                     bookElement.Remove();
                     doc.Save(_filePath);
-                    InvalidateCache();
                 }
                 catch (XmlException ex)
                 {
@@ -191,11 +178,6 @@ namespace BookStore.Data.Repositories
                 var doc = new XDocument(new XElement("books"));
                 doc.Save(_filePath);
             }
-        }
-
-        private void InvalidateCache()
-        {
-            _cache = null;
         }
 
         private string EscapeXml(string value)
