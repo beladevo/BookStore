@@ -59,19 +59,19 @@ body {
   height: 100%;
 
   .primary {
-    @include mat.button-color($theme: $theme, $color-variant: "primary");
+    @include mat.button-color($theme, "primary");
   }
 
   .secondary {
-    @include mat.button-theme($theme: $theme, $color-variant: "secondary");
+    @include mat.button-color($theme, "secondary");
   }
 
   .tertiary {
-    @include mat.button-theme($theme: $theme, $color-variant: "tertiary");
+    @include mat.button-color($theme, "tertiary");
   }
 
   .error {
-    @include mat.button-theme($theme: $theme, $color-variant: "error");
+    @include mat.button-color($theme, "error");
   }
 }
 
