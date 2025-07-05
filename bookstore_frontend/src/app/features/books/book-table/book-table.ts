@@ -130,7 +130,6 @@ export class BookTable implements OnInit {
     );
 
     const state = window.history.state;
-    console.log('🚀 ~ BookTable ~ ngOnInit ~ state:', state);
     if (state?.['newIsbn']) {
       this.highlightedIsbn = state['newIsbn'];
 

@@ -144,7 +144,6 @@ export class BookForm implements OnInit {
       this.bookService.create(newBook).subscribe({
         next: () => {
           this.router.navigate(['/'], { state: { newIsbn: newBook.isbn } });
-          console.log("🚀 ~ BookForm ~ this.bookService.create ~ newIsbn: newBook.isbn:", newBook.isbn)
           this.notify.success(`Book "${newBook.title}" created successfully.`);
         },
         error: (error) => {
